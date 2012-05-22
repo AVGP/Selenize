@@ -1,0 +1,25 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	ServerName selenize.v220120583698239.yourvserver.net
+
+	DocumentRoot /var/www/Selenize/app/webroot
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride All
+	</Directory>
+	<Directory /var/www/Selenize/app/webroot>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride All
+		Order allow,deny
+		Allow from all
+		DAV on
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>

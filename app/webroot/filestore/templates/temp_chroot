@@ -1,0 +1,8 @@
+chroot="PATH"
+users=["www-data"]
+groups=["www-data"]
+packages=["bash", "php5-cli", "php-pear"]
+testCommandsInsideJail=["ls","mkdir","cd","rm","less"]
+userFiles=["/etc/password", "/etc/shadow"]
+groupFiles=["/etc/group", "/etc/gshadow"]
+forceCopy=["/usr/bin/phpunit", "/usr/share/php/*"]
