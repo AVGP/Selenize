@@ -2,6 +2,7 @@
 
 CHROOT_PATH = "/tmp/chroot_$1"
 
+mkdir $CHROOT_PATH
 makejail "/tmp/chroot_conf_$1"
 cp -rfv /usr/share/php "$CHROOT_PATH/usr/share/"
 chown -R www-data:www-data $CHROOT_PATH
