@@ -44,6 +44,7 @@ class CreateEnvShell extends AppShell {
             $this->Testdrive->save();
             $this->Job->delete();
             exec('rm -rf ' . $chrootPath);
+            $this->out('Done.');
         }
     }
 }
