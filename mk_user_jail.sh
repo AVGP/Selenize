@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CHROOT_PATH = "/tmp/chroot_$1"
+CHROOT_PATH="/tmp/chroot_$1"
 
 mkdir $CHROOT_PATH
 mkdir "$CHROOT_PATH/sys"
