@@ -28,16 +28,29 @@ To setup the initial database schema, import app/Config/Schema/init.sql into you
 1.  Activate mod_rewrite, mod_dav and mod_dav_fs by running `a2enmod rewrite && a2enmod dav_fs`
 2.  Activating dav_fs will usually activate dav, too.
 3.  Copy the Selenize/app/Config/selenize_vhost to your /etc/apache2/sites-enabled/ and adjust ServerName and ServerAlias.
-4.  Restart Apache.
+4.  Make sure the Selenize/app/webroot/filestore/users directory exists.
+5.  Restart Apache.
 
-### Step 3: Setup the environment
+### Step 3: Setup Beanstalkd
 
-1.  Make sure the Selenize/app/webroot/filestore/users directory exists.
-2.  Create a user "selenium", cd into /home/selenium and get selenium-server with `wget http://selenium.googlecode.com/files/selenium-server-standalone-2.21.0.jar`
-3.  Copy Selenize/Xvfb and Selenize/selenium to /etc/init.d.
-4.  Copy Selenize/selenium-server.sh to /usr/bin/selenium-server.sh
-5.  Edit sudoers to allow www-data to run /etc/mk_user_jail and chroot: `www-data localhost=(ALL) NOPASSWD:/etc/mk_user_jail.sh,/usr/sbin/chroot`
-6.  Start the daemons by running `/etc/init.d/Xvfb start && /etc/init.d/selenium start`
-7.  Wait a moment and check if Xvfb and java is running (Opening Ports 6099 and 4444)
-8.  Update rc.d with `update-rc.d Xvfb defaults && update-rc.d selenium defaults` - ignore the warnings.
+After installing Beanstalkd via apt, you just have to uncomment the last line in /etc/default/beanstalkd and run `/etc/init.d/beanstalkd start`
 
+### Step 4: Install PHPUnit and PHPUnit_Selenium
+Run the following
+    pear upgrade
+    pear config-set auto_discover 1
+    pear channel-discover pear.phpunit.de
+    pear install phpunit/PHPUnit
+    pear install phpunit/PHPUnit_Selenium
+
+### Step 4: Setup the environment
+
+1.  Create a user "selenium", cd into /home/selenium and get selenium-server with `wget http://selenium.googlecode.com/files/selenium-server-standalone-2.21.0.jar`
+2.  Copy Selenize/Xvfb and Selenize/selenium to /etc/init.d.
+3.  Copy Selenize/selenium-server.sh to /usr/bin/selenium-server.sh
+4.  Edit sudoers to allow www-data to run /etc/mk_user_jail and chroot: `www-data localhost=(ALL) NOPASSWD:/etc/mk_user_jail.sh,/usr/sbin/chroot`
+5.  Start the daemons by running `/etc/init.d/Xvfb start && /etc/init.d/selenium start`
+6.  Wait a moment and check if Xvfb and java is running (Opening Ports 6099 and 4444)
+7.  Update rc.d with `update-rc.d Xvfb defaults && update-rc.d selenium defaults` - ignore the warnings.
+8.  Run `git submodule add git://github.com/carlipa/cakephp-queue.git app/Plugin/Queue` to setup cakephp-queue plugin for Beanstalkd
+9.  Start the create_env console
