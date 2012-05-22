@@ -20,7 +20,7 @@ class RepositoriesController extends AppController {
                 exec('cd ' . $repopath . ' && git init --bare && git update-server-info');
                 
                 $this->Session->setFlash('Repository created :)');
-                $this->redirect('/users/dashboard');
+                $this->redirect('/repositories');
             }
             else {
                 $this->Session->setFlash('Uh oh! Something went wrong!');
@@ -44,8 +44,6 @@ class RepositoriesController extends AppController {
         file_put_contents('/tmp/chroot_conf_' . $id, $chrootTpl);
         
         //making the chroot jail
-        $chrootPath = '/tmp/chroot_' . $id;
-        mkdir($chrootPath);
         $this->Job->put(array('body' => array('repo_id' => $id, 'testdrive_id' => $this->Repository->Testdrive->id)));
         $this->Session->setFlash('Testdrive started. Reload this page to see the progress');
         $this->redirect('/repositories/');
