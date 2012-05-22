@@ -7,7 +7,7 @@
 *   makejail
 *   chroot
 *   Beanstalkd
-*   PHP (cli & apache)
+*   PHP (cli & apache - incl. curl extension)
 *   mod_rewrite, mod_dav & mod_dav_fs
 *   pear
 *   phpunit & PHPUnit_Selenium
