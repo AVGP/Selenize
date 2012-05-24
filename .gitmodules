@@ -1,6 +1,3 @@
-[submodule "cakephp-queue"]
-	path = cakephp-queue
-	url = git://github.com/carlipa/cakephp-queue.git
 [submodule "app/Plugin/Queue"]
 	path = app/Plugin/Queue
 	url = git://github.com/carlipa/cakephp-queue.git
