@@ -1,2 +1,5 @@
+app/webroot/filestore/users/*
+*.log
+*.out
 app/tmp
 app/tmp/*
