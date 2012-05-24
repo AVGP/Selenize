@@ -1,0 +1,50 @@
+body,html {
+    height: 100%;
+    width: 100%;
+}
+
+a, a:visited {
+    color: #469600;
+}
+
+a:hover {
+    color: #66cc22;
+}
+
+div#container {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: #ccc 0px 0px 10px 2px;
+}
+
+div#header {
+    text-align: center;
+}
+
+.nav {
+    margin-left: 10px;
+}
+
+.nav li {
+    background-color: #bada55;
+    border-radius: 6px;
+}
+
+.nav li a {
+    color: #fff;
+}
+
+.nav li a:hover {
+    color: #999;
+}
+
+div.submit input {
+    background: #ccc;
+    background:-moz-linear-gradient(top, #A3FFA3, #82CC82);
+    background:-webkit-linear-gradient(top, #A3FFA3, #82CC82); 
+    background:-o-linear-gradient(top, #A3FFA3, #82CC82);
+    background:-ms-linear-gradient(top, #A3FFA3, #82CC82);
+    background:linear-gradient(top, #A3FFA3, #82CC82); /* Come on guys, support this -.- */
+    font-weight: bold;
+}
+    
