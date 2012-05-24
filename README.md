@@ -34,6 +34,7 @@ To setup the initial database schema, import app/Config/Schema/init.sql into you
 ### Step 3: Setup Beanstalkd
 
 After installing Beanstalkd via apt, you just have to uncomment the last line in /etc/default/beanstalkd and run `/etc/init.d/beanstalkd start`
+Setup the CakePHP-Plugin by running `git submodule init --update`.
 
 ### Step 4: Install PHPUnit and PHPUnit_Selenium
 Run the following
@@ -52,5 +53,4 @@ Run the following
 5.  Start the daemons by running `/etc/init.d/Xvfb start && /etc/init.d/selenium start`
 6.  Wait a moment and check if Xvfb and java is running (Opening Ports 6099 and 4444)
 7.  Update rc.d with `update-rc.d Xvfb defaults && update-rc.d selenium defaults` - ignore the warnings.
-8.  Run `git submodule add git://github.com/carlipa/cakephp-queue.git app/Plugin/Queue` to setup cakephp-queue plugin for Beanstalkd
-9.  Start the create_env console
+9.  Create a cronjob for the create_env console: @reboot cd /var/www/Selenize/app;nohup Console/cake create_env &> console.log
