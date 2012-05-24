@@ -15,21 +15,22 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo $cakeDescription ?>:
-		<?php echo $title_for_layout; ?>
+        Selenize
+		<?php if(!empty($title_for_layout)) echo ' - ' . $title_for_layout; ?>
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
 
-		echo $this->Html->css('cake.generic');
+		echo $this->Html->css('bootstrap.min.css');
+    	echo $this->Html->css('main.css');
+        
+        echo $this->Html->script('bootstrap.min.js');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -37,19 +38,18 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 	?>
 </head>
 <body>
-	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
+	<div id="container" class="container">
+		<div id="header" class="row">
+			<h1 class="row">Selenize</h1>
+    		<div class="row"><div class="span8 offset2"><?php echo $this->Session->flash(); ?></div></div>
 		</div>
-		<div id="content">
-
-			<?php echo $this->Session->flash(); ?>
-
-			<?php echo $this->fetch('content'); ?>
+		<div id="content" class="row">
+            <div class="span2"><?php echo $this->element('navigation'); ?></div>
+			<div class="span10"><?php echo $this->fetch('content'); ?></div>
 		</div>
-		<div id="footer">
+		<div id="footer" class="row">
 			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
+					$this->Html->image('cake.power.gif', array('alt' => 'CakePHP', 'border' => '0')),
 					'http://www.cakephp.org/',
 					array('target' => '_blank', 'escape' => false)
 				);

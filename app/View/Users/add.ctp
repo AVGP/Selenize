@@ -3,5 +3,5 @@
 echo $this->Form->create('User');
 echo $this->Form->input('username');
 echo $this->Form->input('password');
-echo $this->Form->end('I want it!');
+echo $this->Form->end('I want it!', array('class' => 'button'));
 ?>
