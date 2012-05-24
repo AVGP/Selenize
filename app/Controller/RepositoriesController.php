@@ -19,11 +19,11 @@ class RepositoriesController extends AppController {
                 mkdir($repopath);
                 exec('cd ' . $repopath . ' && git init --bare && git update-server-info');
                 
-                $this->Session->setFlash('Repository created :)');
+                $this->Session->setFlash('Repository created :)', 'default', array('class' => 'alert alert-success'));
                 $this->redirect('/repositories');
             }
             else {
-                $this->Session->setFlash('Uh oh! Something went wrong!');
+                $this->Session->setFlash('Uh oh! Something went wrong!', 'default', array('class' => 'alert alert-error'));
             }
         }
         else $this->set('user_id', $this->Auth->user('id'));
@@ -45,7 +45,7 @@ class RepositoriesController extends AppController {
         
         //making the chroot jail
         $this->Job->put(array('body' => array('repo_id' => $id, 'testdrive_id' => $this->Repository->Testdrive->id)));
-        $this->Session->setFlash('Testdrive started. Reload this page to see the progress');
+        $this->Session->setFlash('Testdrive started. Running the tests will take a few minutes. Reload this page from time to time to see the progress', 'default', array('class' => 'alert alert-info'));
         $this->redirect('/repositories/');
     }    
     

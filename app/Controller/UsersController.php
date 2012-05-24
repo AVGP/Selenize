@@ -17,10 +17,11 @@ class UsersController extends AppController {
                 exec('htpasswd -b -c ' . escapeshellarg($homepath . '/.htpasswd'). ' ' . $username . ' ' . $password);
                 file_put_contents($homepath . '/.htaccess', "AuthType Basic\nAuthName Git\nAuthUserFile " . $homepath . '/.htpasswd' . "\nRequire valid-user\nAllow from all");
                 
-                $this->Session->setFlash('Yay! Signup was successful. Welcome on board!');
-                $this->redirect($this->Auth->redirect());            }
+                $this->Session->setFlash('Yay! Signup was successful. Welcome on board!', 'default', array('class' => 'alert alert-success'));
+                $this->redirect($this->Auth->redirect());                            
+            }
             else {
-                $this->Session->setFlash('User could not be created. That makes us very sad.');
+                $this->Session->setFlash('User could not be created. That makes us very sad.', 'default', array('class' => 'alert alert-error'));
             }
         }        
     }
@@ -28,11 +29,11 @@ class UsersController extends AppController {
     public function login() {
         if($this->request->is('post')) {
             if($this->Auth->login()) {
-                $this->Session->setFlash('Hey there. Good you\'re back :)');
+                $this->Session->setFlash('Hey there. Good you\'re back :)', 'default', array('class' => 'alert alert-success'));
                 $this->redirect('/repositories/');
             }
             else {
-                $this->Session->setFlash('No. That was wrong - sorry.');
+                $this->Session->setFlash('No. That was wrong - sorry.', 'default', array('class' => 'alert alert-error'));
             }
         }        
     }
