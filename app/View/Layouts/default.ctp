@@ -24,9 +24,8 @@
         Selenize
 		<?php if(!empty($title_for_layout)) echo ' - ' . $title_for_layout; ?>
 	</title>
-	<?php
-		echo $this->Html->meta('icon');
-
+    <link rel="shortcut icon" href="favicon.ico" />
+    <?php
 		echo $this->Html->css('bootstrap.min.css');
     	echo $this->Html->css('main.css');
         
@@ -36,26 +35,34 @@
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
+    <link href='http://fonts.googleapis.com/css?family=Cuprum:400,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
-	<div id="container" class="container">
-		<div id="header" class="row">
-			<h1 class="row">Selenize</h1>
-    		<div class="row"><div class="span8 offset2"><?php echo $this->Session->flash(); ?></div></div>
+    <div id="wrap">
+    	<div id="container" class="container-fluid">
+	    	<div id="header" class="row-fluid">
+		    	<h1 class="row-fluid">Selenize</h1>
+		    </div>
+		    <div id="content" class="row-fluid">
+                <div class="span2"><?php echo $this->element('navigation'); ?></div>
+			    <div class="span10">
+                    <?php echo $this->Session->flash(); ?>
+                    <?php echo $this->fetch('content'); ?>                    
+                </div>
+		    </div>
 		</div>
-		<div id="content" class="row">
-            <div class="span2"><?php echo $this->element('navigation'); ?></div>
-			<div class="span10"><?php echo $this->fetch('content'); ?></div>
-		</div>
-		<div id="footer" class="row">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => 'CakePHP', 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false)
-				);
-			?>
-		</div>
+	    <div id="footer" class="row-fluid">
+            <div class="span12">
+            <small>&copy; 2012 by Geekonaut</small>
+		    <?php echo $this->Html->link(
+				$this->Html->image('cake.power.gif', array('alt' => 'CakePHP', 'border' => '0')),
+				'http://www.cakephp.org/',
+				array('target' => '_blank', 'escape' => false)
+			);
+		    ?>
+        </div>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
+    <a href="https://github.com/AVGP/Selenize" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>    
+    <?php echo $this->element('sql_dump'); ?>
 </body>
 </html>
