@@ -11,14 +11,43 @@ a:hover {
     color: #66cc22;
 }
 
-div#container {
+h1, h2, h3 {
+    font-family: "Cuprum";
+}
+
+div#wrap {
+    position: relative;
+    display: block;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: auto;
+    width: auto;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: #ccc 0px 0px 10px 2px;
+    margin: 20px 50px;
+    padding: 5px 10px;
+}
+
+div#container {
+    padding-bottom: 40px;
+}
+
+div#footer {
+    position: absolute;
+    text-align: right;
+    bottom: 0px;
+    right: 10px;
 }
 
 div#header {
     text-align: center;
+}
+
+div#home-steps div.well {
+    display: inline-block;
 }
 
 .nav {
@@ -32,10 +61,13 @@ div#header {
 
 .nav li a {
     color: #fff;
+    font-weight: bold;
+    text-shadow: #333 1px 1px 2px;
 }
 
 .nav li a:hover {
     color: #999;
+    text-shadow: #ccc 1px 1px 2px;
 }
 
 div.submit input {
