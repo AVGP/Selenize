@@ -29,6 +29,7 @@
 		echo $this->Html->css('bootstrap.min.css');
     	echo $this->Html->css('main.css');
         
+        echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
         echo $this->Html->script('bootstrap.min.js');
 
 		echo $this->fetch('meta');
