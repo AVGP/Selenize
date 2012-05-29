@@ -32,6 +32,10 @@ class RepositoriesController extends AppController {
     public function test($id) {
         $id = intval($id);
         $this->Repository->id = $id;
+        
+        if($this->Repository->User->read('id') != $this->Auth->user('id'))
+            $this->denyAccess();
+        
         $this->Repository->Testdrive->create();
         $this->Repository->Testdrive->save(array('Testdrive' => array(
             'repository_id' => $id,
@@ -53,4 +57,16 @@ class RepositoriesController extends AppController {
         $repositories = $this->Repository->find('all', array('conditions' => array( 'user_id' => $this->Auth->user('id'))));
         $this->set('repositories', $repositories);
     }    
+    
+    public function show($id = null) {
+        $repository = $this->Repository->findById($id);
+        if($repository === null || $repository['User']['id'] != $this->Auth->user('id'))
+            $this->denyAccess();
+        $this->set('repository', $repository);
+    }
+    
+    public function denyAccess($msg = 'You are not allowed to access this repository') {
+            $this->Session->setFlash($msg);
+            $this->redirect('/repositories');        
+    }
 }
