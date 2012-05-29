@@ -6,13 +6,11 @@
 <h3>Key advantages</h3>
 <ul>
     <li>No need for a virtual server</li>
-    <li><strong>No need to change</strong> your server configuration</li>
+    <li>No need for a public test environment</li>
     <li>We offer you a <strong>free</strong> and <strong>centralized</strong> testing infrastructure</li>
-    <li>Only install PHPUnit and PHPUnit_Selenium to write tests*</li>    
     <li>No Know-How of the server-side requirements needed</li>
     <li>You write the tests, we run them for you</li>
 </ul>
-<p><small>*) You can write the tests without having PHPUnit and PHPUnit_Selenium installed, but it will increase development speed to have them locally</small></p>
 
 <h3>How to use it</h3>
 <p>You need a git repository where your code is stored and a &quot;tests/&quot; subdirectory in its root folder.</p>
