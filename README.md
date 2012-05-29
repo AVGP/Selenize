@@ -1,5 +1,9 @@
 # Selenize
 
+## License Info
+
+This project is licenced under GPL3.
+
 ## Installation
 
 ### Prerequisites:
