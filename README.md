@@ -16,6 +16,7 @@
 *   java JRE
 *   selenium-server-standalone
 *   sudo
+*   lighttpd
 
 ### Step 1: Setup the database
 
@@ -53,4 +54,5 @@ Run the following
 5.  Start the daemons by running `/etc/init.d/Xvfb start && /etc/init.d/selenium start`
 6.  Wait a moment and check if Xvfb and java is running (Opening Ports 6099 and 4444)
 7.  Update rc.d with `update-rc.d Xvfb defaults && update-rc.d selenium defaults` - ignore the warnings.
+8.  Make a symlink for lighttpd: ln -s /usr/sbin/lighttpd /usr/bin/lighttpd to allow the www-data user to access it.
 9.  Create a cronjob for the create_env console: @reboot cd /var/www/Selenize/app;nohup Console/cake create_env &> console.log

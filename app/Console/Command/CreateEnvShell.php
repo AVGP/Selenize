@@ -10,7 +10,7 @@ class CreateEnvShell extends AppShell {
             $testdrive_id = $job['Job']['body']['testdrive_id'];
 
             $this->Testdrive->id = $testdrive_id;
-            $this->Testdrive->set('result', 'Setting up');
+            $this->Testdrive->set('result', 'Setting up: Sandbox');
             $this->Testdrive->save();
 
             //Create a chroot jail
@@ -18,6 +18,8 @@ class CreateEnvShell extends AppShell {
             $chrootPath = '/tmp/chroot_' . $repo_id;
 
             //Clone repository and create testrunner
+            $this->Testdrive->set('result', 'Setting up: Repository');
+            $this->Testdrive->save();
             $repo = $this->Repository->findById($repo_id);
             $repoPath = '/var/www/Selenize/app/webroot/filestore/users/' . $repo['User']['username'] . '/' . $repo['Repository']['name'];
             exec('cd ' . $chrootPath . ' && git clone ' . $repoPath . ' > ' . $chrootPath . '/git.log');                
@@ -26,7 +28,14 @@ class CreateEnvShell extends AppShell {
             file_put_contents($chrootPath . '/test_runner.sh', $testrunnerTpl);
             exec('chmod a+x ' . $chrootPath . '/test_runner.sh');
 
-            $this->Testdrive->set('result', 'Running');
+            $this->Testdrive->set('result', 'Setting up Testserver');
+            $this->Testdrive->save();            
+            $serverTpl = file_get_contents('/var/www/Selenize/app/webroot/filestore/templates/lighttpd.conf');
+            $serverTpl = str_replace('DOCROOT', $chrootPath . '/' . $repo['Repository']['name'], $serverTpl);
+            file_put_contents('/tmp/server.conf', $serverTpl);
+            exec('nohup lighttpd -f /tmp/server.conf &');
+
+            $this->Testdrive->set('result', 'Running tests');
             $this->Testdrive->save();
             $this->out('Created Environment #' . $repo_id);
             
@@ -44,6 +53,7 @@ class CreateEnvShell extends AppShell {
             $this->Testdrive->save();
             $this->Job->delete();
             exec('rm -rf ' . $chrootPath);
+            exec('killall lighttpd && rm /tmp/server.conf');
             $this->out('Done.');
         }
     }
