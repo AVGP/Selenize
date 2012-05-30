@@ -1,16 +1,19 @@
 <h2>Getting started</h2>
 <div class="well">
     <h3>Before you start</h3>
-    <p>Selenize is there to help you <u>test</u> your web project. To be able to use it, you need the following:</p>
+    <p>Selenize is there to help you <u>test</u> your web project. This guide will help you getting <strong>from zero to hero</strong>:</p>
     <ul>
-        <li>PHPUnit and/or PHPUnit_Selenium tests in the /tests/ directory of your repository</li>
-        <li>Test files have names ending in &quot;Test.php&quot;</li>
-        <li>A git repository for your project (can be local-only)</li>
+        <li><a href="#selenium101">Install Selenium IDE and the PHP formatters</a></li>
+        <li><a href="#create-tests">Create PHPUnit_Selenium tests in the /tests/ directory of your repository</a></li>
+        <li><a href="#testserver">Database and webserver connection data and populating your database</a></li>
+        <li><a href="#add-remote">Add your Selenize Repository as a remote to your existing git repository</li>
+        <li><a href="#upload-and-run">Upload and run your test</a></li>
+        <li><a href="#results">See what happened</a></li>
     </ul>
 </div>
 
 <div class="well">
-    <h3>Selenium 101</h3>
+    <h3><a name="selenium101"></a>Selenium 101</h3>
     <p>
         <a href="http://www.seleniumhq.com">Selenium</a> is a powerful testing tool to automate testing in various browsers.
         It allows you to simulate a user on your website doing all the tasks your real user would do and you want to test.
@@ -39,7 +42,7 @@
 </div>
 
 <div class="well">
-    <h3>Creating tests for your project</h3>
+    <h3><a name="create-tests"></a>Creating tests for your project</h3>
     <p>
         When you have installed Selenium IDE you can start it (usually via the &quot;Tools&quot; menu)
         Click on the little record button and start browsing like your user would on your site.
@@ -56,6 +59,7 @@
         make sure their filenames end in &quot;Test.php&quot; (e.g. &quot;myTest.php&quot;)
     </p>
     <div class="alert alert-info">
+        <a name="testserver"></a>
         <p><strong>Info on the test web- and database-server:</strong></p>
         <p><strong>Webserver:</strong></p>
         <p>Please note that the local test server for your project is available at <strong>http://localhost:8080</strong></p>
@@ -63,21 +67,22 @@
         <p><strong>Database</strong></p>
         <p>The connection parameters for your test database:</p>
         <ul>
-            <li><strong>Username:</strong> Your Selenize account username</li>
+            <li><strong>Username:</strong> usr_USERNAME (replace with your Selenize account username)</li>
             <li><strong>Password:</strong> Your Selenize account password</li>
-            <li><strong>Database:</strong> usr_USERNAME, where USERNAME is your username.</li>
+            <li><strong>Database:</strong> usr_USERNAME, where USERNAME is your username again.</li>
         </ul>
         <br />
         <p><strong>Initializing the database:</strong></p>
-        <p>Your test database is created upon starting the tests and dropped when tests are completed</p>
+        <p>Your test database is cleared when you start a test run.</p>
         <p>To create your database schema and/or import test data, place an <strong>&quot;init.sql&quot;</strong> file into the tests directory.</p>
     </div>
 </div>
 
 <div class="well">
-    <h3>Upload and run the tests</h3>
+    <h3><a name="upload-and-run"></a>Upload and run the tests</h3>
     <p>Now that you have your test files in place, make sure your git repository has the selenize repository as a remote.</p> 
     <div class="alert alert-info">
+        <a name="add-remote"></a>
         <p>If you are unsure if your Selenize repository is set up as a remote, run <pre><code>git remote -v show</code></pre></p>
         <p>If your selenize repository does not show up, use the following command:</p>
         <p><u>Please substitute</u> <strong>USER</strong> with your username and <strong>REPOSITORY</strong> with the name of the repository you created on Selenize in the command below</p>
@@ -88,7 +93,7 @@
 </div>
 
 <div class="well">
-    <h3>What happened?</h3>
+    <h3><a name="results"></a>What happened?</h3>
     <p>For security reasons, the system will set up a <strong>safe sandbox</strong> for your repository and starts a <strong>local-only</strong> webserver.</p>
     <p>This may take a few minutes, so you should refresh the dashboard after a few minutes and the status should be updated</p>
     <p>When you see &quot;Running tests&quot; as the status, your tests are running - this will take some time, too.</p>
