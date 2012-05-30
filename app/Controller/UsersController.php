@@ -1,4 +1,6 @@
 <?php
+App::uses('Sanitize', 'Utility');
+
 class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
@@ -9,11 +11,20 @@ class UsersController extends AppController {
         if($this->request->is('post')) {
             $this->User->create();
             if($this->User->save($this->request->data)) {
-                $username = escapeshellarg($this->request->data['User']['username']);
-                $password = escapeshellarg($this->request->data['User']['password']);
+                
+                $db = &ConnectionManager::getDataSource('default');
+                $prefixedUser = 'usr_' . $this->request->data['User']['username'];
+                $rawPassword = $this->request->data['User']['password'];
+                $db->query('CREATE DATABASE ' .Sanitize::clean($prefixedUser, array('encode' => false)));
+                $db->query('CREATE USER ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '@localhost IDENTIFIED BY "' . Sanitize::clean($rawPassword, array('encode' => false))  . '"');
+                $db->query('GRANT ALL ON ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '.* TO ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '@localhost');
+                
                 $homepath = '/var/www/Selenize/app/webroot/filestore/users/' . $this->request->data['User']['username'];
+                if(strpos(realpath($homepath), '/var/www/Selenize/app/webroot/filestore/users/' ) !== 0) return false;
                 
                 mkdir($homepath);
+                $username = escapeshellarg($this->request->data['User']['username']);
+                $password = escapeshellarg($this->request->data['User']['password']);
                 exec('htpasswd -b -c ' . escapeshellarg($homepath . '/.htpasswd'). ' ' . $username . ' ' . $password);
                 file_put_contents($homepath . '/.htaccess', "AuthType Basic\nAuthName Git\nAuthUserFile " . $homepath . '/.htpasswd' . "\nRequire valid-user\nAllow from all");
                 
