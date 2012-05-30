@@ -15,9 +15,7 @@ class UsersController extends AppController {
                 $db = &ConnectionManager::getDataSource('default');
                 $prefixedUser = 'usr_' . $this->request->data['User']['username'];
                 $rawPassword = $this->request->data['User']['password'];
-                $db->query('CREATE DATABASE ' .Sanitize::clean($prefixedUser, array('encode' => false)));
                 $db->query('CREATE USER ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '@localhost IDENTIFIED BY "' . Sanitize::clean($rawPassword, array('encode' => false))  . '"');
-                $db->query('GRANT ALL ON ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '.* TO ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '@localhost');
                 
                 $homepath = '/var/www/Selenize/app/webroot/filestore/users/' . $this->request->data['User']['username'];
                 if(strpos(realpath($homepath), '/var/www/Selenize/app/webroot/filestore/users/' ) !== 0) return false;
