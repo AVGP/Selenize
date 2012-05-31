@@ -19,7 +19,6 @@ class CreateEnvShell extends AppShell {
             //Create a chroot jail
             $chrootPath = $this->setupChroot($repo_id);
 
-
             //Clone repository and create testrunner
             $repo = $this->Repository->findById($repo_id);
             $this->setupRepository($chrootPath, $repo);
@@ -29,15 +28,14 @@ class CreateEnvShell extends AppShell {
             $this->setupWebserver($chrootPath, $repo);
 
             //Setup database
-            $this->setupDatabase();
+            $this->setupDatabase($repo);
+            $this->importDatabase($chrootPath, $repo);
                         
             //Running tests
-            $this->runTests($repo_id);
+            $this->runTests($chrootPath, $repo_id);
             
             //Teardown
-            $this->Job->delete();
-            exec('rm -rf ' . $chrootPath);
-            exec('killall lighttpd && rm /tmp/server.conf');
+            $this->tearDown($chrootPath, $repo);
             $this->out('Done.');
         }
     }
@@ -75,16 +73,24 @@ class CreateEnvShell extends AppShell {
         exec('nohup lighttpd -f /tmp/server.conf &');        
     }
     
-    protected setupDatabase($repo) {
+    protected function setupDatabase($repo) {
         $this->Testdrive->set('result', 'Setting up Database');
         $this->Testdrive->save();
         
-        $prefixedUser = $repo['User']['username'];
+        $db = &ConnectionManager::getDataSource('default');
+        $prefixedUser = 'usr_' . $repo['User']['username'];
         $db->query('CREATE DATABASE ' .Sanitize::clean($prefixedUser, array('encode' => false)));
-        $db->query('GRANT ALL ON ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '.* TO ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '@localhost');
+        $db->query('GRANT USAGE ON ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '.* TO ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '@localhost');
     }
     
-    protected function runTests($repo_id) {
+    protected function importDatabase($chrootPath, $repo) {
+        if(!is_file($chrootPath . '/' . $repo['Repository']['name'] . '/test/init.sql')) return;
+        $initSql = explode(';', file_get_contents($chrootPath . '/' . $repo['Repository']['name'] . '/test/init.sql'));
+        $db = &ConnectionManager::getDataSource('default');
+        foreach($initSql as $statement) $db->query($statement);
+    }
+    
+    protected function runTests($chrootPath, $repo_id) {
         $this->Testdrive->set('result', 'Running tests');
         $this->Testdrive->save();
             
@@ -101,4 +107,14 @@ class CreateEnvShell extends AppShell {
             $this->Testdrive->set('result', 'Aborted');
         $this->Testdrive->save();        
     }
+    
+    protected function tearDown($chrootPath, $repo) {
+        $this->Job->delete();
+        exec('sudo umount -l ' . $chrootPath .'/proc && sudo umount -l ' . $chrootPath . '/sys');
+        exec('rm -rf ' . $chrootPath);
+        exec('killall lighttpd && rm /tmp/server.conf');        
+        $db = &ConnectionManager::getDataSource('default');
+        $prefixedUser = 'usr_' . $repo['User']['username'];
+        $db->query('DROP DATABASE ' .Sanitize::clean($prefixedUser, array('encode' => false)));
+   }
 }
