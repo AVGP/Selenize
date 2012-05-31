@@ -18,9 +18,13 @@ class UsersController extends AppController {
                 $db->query('CREATE USER ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '@localhost IDENTIFIED BY "' . Sanitize::clean($rawPassword, array('encode' => false))  . '"');
                 
                 $homepath = '/var/www/Selenize/app/webroot/filestore/users/' . $this->request->data['User']['username'];
-                if(strpos(realpath($homepath), '/var/www/Selenize/app/webroot/filestore/users/' ) !== 0) return false;
+                mkdir($homepath); //Without this, realpath will screw us!
+                if(strpos(realpath($homepath), '/var/www/Selenize/app/webroot/filestore/users/' ) !== 0) {
+                    rmdir($homepath); //This is safe. because it fails for non-empty dirs.
+                    $this->Session->setFlash('That username is not allowed.','default', array('class' => 'alert alert-error'));
+                    return false;
+                }
                 
-                mkdir($homepath);
                 $username = escapeshellarg($this->request->data['User']['username']);
                 $password = escapeshellarg($this->request->data['User']['password']);
                 exec('htpasswd -b -c ' . escapeshellarg($homepath . '/.htpasswd'). ' ' . $username . ' ' . $password);
