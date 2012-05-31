@@ -1,7 +1,7 @@
 chroot="PATH"
 users=["www-data"]
 groups=["www-data"]
-packages=["bash", "php5-cli", "php-pear", "php5-curl", "lighttpd"]
+packages=["bash", "php5-cli", "php-pear", "php5-curl", "php5-mysql", "php5-sqlite", "lighttpd"]
 testCommandsInsideJail=["ls","mkdir","cd","rm","less","umount"]
 userFiles=["/etc/password", "/etc/shadow"]
 groupFiles=["/etc/group", "/etc/gshadow"]
