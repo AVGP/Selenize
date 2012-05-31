@@ -41,7 +41,7 @@ class RepositoriesController extends AppController {
         $this->Repository->Testdrive->save(array('Testdrive' => array(
             'repository_id' => $id,
             'logtext' => '',
-            'result' => 'running',
+            'result' => 'Starting',
             'created' => date('Y-m-d H:i:s')
         )));
         $chrootTpl = file_get_contents('/var/www/Selenize/app/webroot/filestore/templates/temp_chroot');
