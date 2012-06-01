@@ -80,14 +80,21 @@ class CreateEnvShell extends AppShell {
         $db = &ConnectionManager::getDataSource('default');
         $prefixedUser = 'usr_' . $repo['User']['username'];
         $db->query('CREATE DATABASE ' .Sanitize::clean($prefixedUser, array('encode' => false)));
-        $db->query('GRANT USAGE ON ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '.* TO ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '@localhost');
     }
     
     protected function importDatabase($chrootPath, $repo) {
-        if(!is_file($chrootPath . '/' . $repo['Repository']['name'] . '/test/init.sql')) return;
-        $initSql = explode(';', file_get_contents($chrootPath . '/' . $repo['Repository']['name'] . '/test/init.sql'));
-        $db = &ConnectionManager::getDataSource('default');
-        foreach($initSql as $statement) $db->query($statement);
+        if(!is_file($chrootPath . '/' . $repo['Repository']['name'] . '/tests/init.sql')) return;
+        $initSql = explode(';', file_get_contents($chrootPath . '/' . $repo['Repository']['name'] . '/tests/init.sql'));
+        
+        $dbConfig = &ConnectionManager::getDataSource('default')->config;
+        $user = escapeshellarg($dbConfig['login']);
+        $pass = escapeshellarg($dbConfig['password']);
+        $dbName = escapeshellcmd('usr_' . $repo['User']['username']);
+        
+        $sqlPath = $chrootPath . '/' . $repo['Repository']['name'] . '/tests/init.sql';
+        $this->out('Importing...');
+        exec('mysql -u' . $user . ' -p' . $pass . ' -D ' . $dbName . ' < ' . $sqlPath);
+        $this->out('Import done');
     }
     
     protected function runTests($chrootPath, $repo_id) {
