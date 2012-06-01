@@ -4,6 +4,7 @@ App::uses('Sanitize', 'Utility');
 class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
+        $this->Auth->logoutRedirect = array(Configure::read('Routing.admin') => false, 'controller' => 'pages', 'action' => 'home');
         $this->Auth->allow('add', 'login', 'logout');
     }
     
@@ -13,9 +14,10 @@ class UsersController extends AppController {
             if($this->User->save($this->request->data)) {
                 
                 $db = &ConnectionManager::getDataSource('default');
-                $prefixedUser = 'usr_' . $this->request->data['User']['username'];
+                $usr = Sanitize::clean($this->request->data['User']['username'], array('encode' => false));
                 $rawPassword = $this->request->data['User']['password'];
-                $db->query('CREATE USER ' . Sanitize::clean($prefixedUser, array('encode' => false)) . '@localhost IDENTIFIED BY "' . Sanitize::clean($rawPassword, array('encode' => false))  . '"');
+                $db->query('CREATE USER usr_' . $usr . '@localhost IDENTIFIED BY "' . Sanitize::clean($rawPassword, array('encode' => false))  . '"');
+                $db->query('GRANT ALL PRIVILEGES ON `usr\_' . $usr . '`.* TO \'usr_' . $usr . '\'@localhost');
                 
                 $homepath = '/var/www/Selenize/app/webroot/filestore/users/' . $this->request->data['User']['username'];
                 mkdir($homepath); //Without this, realpath will screw us!
