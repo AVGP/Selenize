@@ -48,7 +48,6 @@ class RepositoriesController extends AppController {
         $chrootTpl = str_replace('PATH', '/tmp/chroot_' . $id, $chrootTpl);
         file_put_contents('/tmp/chroot_conf_' . $id, $chrootTpl);
         
-        //making the chroot jail
         $this->Job->put(array('body' => array('repo_id' => $id, 'testdrive_id' => $this->Repository->Testdrive->id)));
         $this->Session->setFlash('Testdrive started. Running the tests will take a few minutes. Reload this page from time to time to see the progress', 'default', array('class' => 'alert alert-info'));
         $this->redirect('/repositories/');
